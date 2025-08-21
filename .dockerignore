@@ -1,0 +1,21 @@
+# Исключаем временные и служебные файлы
+.git
+.gitignore
+*.md
+*.log
+*.tmp
+*.swp
+*.swo
+*.DS_Store
+node_modules
+.idea
+.vscode
+# Исключаем тестовые и скриптовые файлы
+Dockerfile
+test_api.sh
+# Исключаем Windows-специфичные файлы
+*.bat
+*.ps1
+*.exe
+Thumbs.db
+desktop.ini 
