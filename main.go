@@ -1,10 +1,11 @@
 package main
 
 import (
-	asciiart "ascii-art-web/ascii-art"
 	"fmt"
 	"net/http"
 	"os"
+
+	asciiart "ascii-art-web/ascii-art"
 )
 
 //---------------------------------------------------------------------------------------|
@@ -20,7 +21,7 @@ func main() {
 	errFile = string(content)
 
 	// ip := "10.25.0.160"
-	port := 45674
+	port := 8080
 
 	http.Handle("/tigidik/", http.StripPrefix("/tigidik/", http.FileServer(http.Dir("./styles"))))
 
@@ -29,8 +30,10 @@ func main() {
 	http.HandleFunc("/ascii-art", handlerAsciiart)
 
 	// addr := fmt.Sprintf("%s:%d", ip, port)
-	addr := fmt.Sprintf("localhost:%d", port)
-	fmt.Printf("server runing http://%s\n", addr)
+	addr := fmt.Sprintf("0.0.0.0:%d", port) // слушаем на всех интерфейсах
+	fmt.Printf("server running on http://localhost:%d\n", port)
+	err = http.ListenAndServe(addr, nil)
+
 	// err = http.ListenAndServe("10.25.0.160:45674", nil) // : 45674
 	err = http.ListenAndServe(addr, nil)
 	if err != nil {
@@ -69,8 +72,7 @@ func main() {
 //---------------------------------------------------------------------------------------|
 
 func handlerHome(w http.ResponseWriter, r *http.Request) {
-
-	//сначала проверка пути
+	// сначала проверка пути
 	if r.URL.Path != "/" {
 		handlerError(w, http.StatusNotFound)
 		return
@@ -169,7 +171,6 @@ func handlerError(w http.ResponseWriter, errCode int) {
 //---------------------------------------------------------------------------------------|
 
 func asciiGenerator(text, banner string) (string, error) {
-
 	asciiArt, err := asciiart.Generate(text, banner)
 	if err != nil {
 		return "", err
